@@ -12,8 +12,8 @@ $(document).ready(function () {
             }
         }
         else {
-            $("#tsv-markup #input").html("");
-            $("#tsv-markup #output").html("");
+            $("#tsv-markup #input").html("").hide();
+            $("#tsv-markup #output").html("").hide();
         }
     })
 })
@@ -30,8 +30,8 @@ $(document).ready(function () {
             }
         }
         else {
-            $("#markup-tsv #input").html("");
-            $("#markup-tsv #output").html("");
+            $("#markup-tsv #input").html("").hide();
+            $("#markup-tsv #output").html("").hide();
         }
     })
 })

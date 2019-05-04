@@ -14,30 +14,30 @@ Convert the Pokémon DnD Move Dex from a Tab Separated Value file to a Markup Te
     <div><input id="file" type="file" accept=".tsv"/></div>
     <div id="display">
         <div>
-            <div style="float:left">Display <a onclick="">input</a> | <a onclick="">output</a></div>
+            <div style="float:left">Display <a onclick="showInput()">input</a> | <a onclick="showOutput()">output</a></div>
             <div style="float:right"><button onclick="download()">Download Output</button></div>
             <div style="clear:both"></div>
         </div>
         <hr/>
         <div>
-            <pre id="input" hidden></pre>
-            <pre id="output" hidden></pre>
+            <textarea id="input" rows="25" wrap="soft" readonly hidden></textarea>
+            <textarea id="output" rows="25" wrap="soft" readonly hidden></textarea>
         </div>
     </div>
 </div>
 
 <div id="markup-tsv" hidden>
-    <div><input id="file" type="file" accept=".tsv"/></div>
+    <div><input id="file" type="file" accept=".txt"/></div>
     <div id="display">
         <div>
-            <div style="float:left">Display <a onclick="">input</a> | <a onclick="">output</a></div>
+            <div style="float:left">Display <a onclick="showInput()">input</a> | <a onclick="showOutput()">output</a></div>
             <div style="float:right"><button onclick="download()">Download Output</button></div>
             <div style="clear:both"></div>
         </div>
         <hr/>
         <div>
-            <pre id="input" hidden></pre>
-            <pre id="output" hidden></pre>
+            <textarea id="input" rows="25" wrap="soft" readonly hidden></textarea>
+            <textarea id="output" rows="25" wrap="soft" readonly hidden></textarea>
         </div>
     </div>
 </div>
