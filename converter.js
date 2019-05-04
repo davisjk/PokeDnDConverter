@@ -1,32 +1,100 @@
-var showing = "None"
+var showing = "None";
 
-function showInput() {
-    $('#output').hide();
-    $('#input').show();
-}
+$(document).ready(function () {
+    $("#tsv-markup #file").change(function () {
+        var tsv = $("#tsv-markup #file")[0].files[0];
+        if (tsv) {
+            var reader = new FileReader();
+            reader.readAsText(tsv);
+            reader.onload = function (e) {
+                $("#tsv-markup #input").html(e.target.result);
+                $("#tsv-markup #output").html(generateMarkup(e.target.result));
+            }
+        }
+        else {
+            $("#tsv-markup #input").html("");
+            $("#tsv-markup #output").html("");
+        }
+    })
+})
+
+$(document).ready(function () {
+    $("#markup-tsv #file").change(function () {
+        var markup = $("#markup-tsv #file")[0].files[0];
+        if (markup) {
+            var reader = new FileReader();
+            reader.readAsText(markup);
+            reader.onload = function (e) {
+                $("#markup-tsv #input").html(e.target.result);
+                $("#markup-tsv #output").html(generateTsv(e.target.result));
+            }
+        }
+        else {
+            $("#markup-tsv #input").html("");
+            $("#markup-tsv #output").html("");
+        }
+    })
+})
 
 function tsvToMarkup() {
-    // if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-    //     alert("The File APIs are not fully supported in this browser.");
-    //     return;
-    // }
-
-    $("#tsv").click();
-    var file = $("#tsv")[0].files[0];
-    if (file) {
-        $("#file").html(file.name);
-
-        var reader = new FileReader();
-        reader.readAsText(file);
-        reader.onload = function (e) {
-            $("#output").html(e.target.result);
-        }
+    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+        alert("The File APIs are not fully supported in this browser.");
+        return;
     }
-    else {
-        $("#file").html("no file selected");
-    }
+
+    $("#markup-tsv").hide();
+    $("#tsv-markup").show();
+    showing = "tsv-markup";
 }
 
 function markupToTsv() {
-    $("#output").html("Markup to TSV");
+    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+        alert("The File APIs are not fully supported in this browser.");
+        return;
+    }
+
+    $("#tsv-markup").hide();
+    $("#markup-tsv").show();
+    showing = "markup-tsv";
+}
+
+function showInput() {
+    if (showing == "tsv-markup") {
+        $("#tsv-markup #output").hide();
+        $('#tsv-markup #input').show();
+    }
+    else if (showing == "markup-tsv") {
+        $('#markup-tsv #output').hide();
+        $('#markup-tsv #input').show();
+    }
+}
+
+function showOutput() {
+    if (showing == "tsv-markup") {
+        $("#tsv-markup #input").hide();
+        $('#tsv-markup #output').show();
+    }
+    else if (showing == "markup-tsv") {
+        $('#markup-tsv #input').hide();
+        $('#markup-tsv #output').show();
+    }
+}
+
+function download() {
+    if (showing == "tsv-markup") {
+        var contents = $('#tsv-markup #output').text();
+    }
+    else if (showing == "markup-tsv") {
+        var contents = $('#markup-tsv #output').text();
+    }
+}
+
+function generateMarkup(tsv) {
+    // TODO
+    console.log("generate markup");
+}
+
+function generateTsv(markup) {
+    // TODO
+    console.log("generate tsv");
 }
