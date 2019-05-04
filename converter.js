@@ -1,7 +1,7 @@
 function tsvToMarkup() {
-    console.log("TSV to Markup");
+    $("#output").value("TSV to Markup");
 }
 
 function markupToTsv() {
-    console.log("Markup to TSV");
+    $("#output").value("Markup to TSV");
 }
