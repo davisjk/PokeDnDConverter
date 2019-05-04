@@ -42,6 +42,8 @@ function tsvToMarkup() {
         return;
     }
 
+    $("#tsv").addClass("underline");
+    $("#markup").removeClass("underline");
     $("#markup-tsv").hide();
     $("#tsv-markup").show();
     showing = "tsv-markup";
@@ -53,6 +55,8 @@ function markupToTsv() {
         return;
     }
 
+    $("#markup").addClass("underline");
+    $("#tsv").removeClass("underline");
     $("#tsv-markup").hide();
     $("#markup-tsv").show();
     showing = "markup-tsv";

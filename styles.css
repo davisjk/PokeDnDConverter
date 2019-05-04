@@ -3,3 +3,7 @@ textarea {
     resize: vertical;
     white-space: pre;
 }
+
+.underline {
+    text-decoration: underline;
+}

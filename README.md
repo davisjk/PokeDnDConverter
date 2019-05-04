@@ -8,7 +8,7 @@ Convert the Pokémon DnD Move Dex from a Tab Separated Value file to a Markup Te
 
 ## Conversion
 
-<h3 align="center"><a onclick="tsvToMarkup()">TSV to Markup</a> | <a onclick="markupToTsv()">Markup to TSV</a></h3>
+<h3 align="center"><a id="tsv" onclick="tsvToMarkup()">TSV to Markup</a> | <a id="markup" onclick="markupToTsv()">Markup to TSV</a></h3>
 
 <div id="tsv-markup" hidden>
     <div><input id="file" type="file" accept=".tsv"/></div>
