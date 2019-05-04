@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 function tsvToMarkup() {
     $("#output").value("TSV to Markup");
 }
