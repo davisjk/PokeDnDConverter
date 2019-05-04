@@ -16,6 +16,7 @@ Convert the Pokémon DnD Move Dex from a Tab Separated Value file to a Markup Te
         <div class="minwidth">
             <div style="float:left">Display <a onclick="">input</a> | <a onclick="">output</a></div>
             <div style="float:right"><button onclick="download()">Download</button></div>
+            <div style="clear:both"></div>
         </div>
         <hr/>
         <div>
