@@ -153,11 +153,13 @@ function generateMarkup(tsv) {
         .split("\n");
 
     rows.forEach(row => {
-        row = row.split("\t");
+        row = row
+            .split("\t")
+            .map(x => x ? x.trim() : "");
         var name = row[0];
 
         // skip the header row
-        if (name != "Name") {
+        if (name && name != "Name") {
             var type = row[1];
             var power = row[2];
             var time = row[3];
@@ -236,46 +238,46 @@ function generateTsv(markup) {
             .replace(column, "")
             .replace("\n", "")
             .replace("\r", "")
+            .split("{split_here}")
+            .map(x => x ? x.trim() : "");
+
+        var name = section[0];
+        var type = section[1];
+        var power = section[2];
+        var time = section[3];
+        var pp = section[4];
+        var duration = section[5];
+        var range = section[6];
+        var description = section[7];
+
+        if (description) {
+            var damage = description.match(dice);
+            damage = damage ? damage[0] : "";
+            if (damage) {
+                description = description
+                    .replace(damage, "{}")
+                    .replace("}+MOVE", "} + MOVE");
+            }
+        }
+
+        var higher = section[8];
+        var override = higher;
+        if (higher) {
+            higher = higher.match(dice);
+            if (higher && higher.length == 3) {
+                higher = higher.join(",");
+                override = "";
+            }
+            else {
+                higher = "";
+            }
+        }
+
+        row = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}"
+            .format(name, type, power, time, pp, duration, range, damage, description, higher, override)
             .trim();
-
-        if (section) {
-            section = section.split("{split_here}");
-            var name = section[0].trim();
-            var type = section[1].trim();
-            var power = section[2].trim();
-            var time = section[3].trim();
-            var pp = section[4].trim();
-            var duration = section[5].trim();
-            var range = section[6].trim();
-            var description = section[7].trim();
-
-            if (description) {
-                var damage = description.match(dice);
-                damage = damage ? damage[0] : "";
-                if (damage) {
-                    description = description.replace(damage, "{}").replace("}+MOVE", "} + MOVE");
-                }
-            }
-
-            var higher = section[8];
-            var override = higher;
-            if (higher) {
-                higher = higher.match(dice);
-                if (higher && higher.length == 3) {
-                    higher = higher.join(",");
-                    override = "";
-                }
-                else {
-                    higher = "";
-                }
-            }
-
-            row = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}"
-                .format(name, type, power, time, pp, duration, range, damage, description, higher, override)
-                .trim();
-            if (row) {
-                tsv.push(row);
-            }
+        if (row) {
+            tsv.push(row);
         }
     });
 
