@@ -166,19 +166,20 @@ function generateMarkup(tsv) {
             var range = row[6];
             var damage = row[7];
             var description = row[8].replace("{}", damage);
-            var higher = row[9].split(",");
+            var higher = row[9];
             var override = row[10];
             var format = markupFormat;
 
             // remove Higher Levels from markup if we have no data for it
-            if (higher == [""] && !override) {
-                format = format.replace(/^.*Higher.*$/, "");
+            if (!higher && !override) {
+                format = format.replace(/.*Higher.*/, "");
                 higher = "";
             }
             else if (override) {
                 higher = override;
             }
             else {
+                higher = higher.split(",");
                 higher = "The base damage of this attack increases to {0} at level 5, {1} at level 11, and {2} at level 17."
                     .format(higher[0], higher[1], higher[2]);
             }
