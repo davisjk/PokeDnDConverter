@@ -1,4 +1,4 @@
-// define String.format if it isn't implemented yet
+/* define String.format if it isn't implemented yet */
 if (!String.prototype.format) {
     String.prototype.format = function () {
         var args = arguments;
@@ -8,11 +8,27 @@ if (!String.prototype.format) {
     };
 }
 
+/* web page formatting/functionality */
 var showing = "None";
 var markup = "";
 var tsv = "";
 
 $(document).ready(function () {
+    // #tsv-markup elements
+    $("#tsv").click(function () {
+        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+            alert("The File APIs are not fully supported in this browser.");
+            return;
+        }
+
+        $("#tsv").addClass("underline");
+        $("#markup").removeClass("underline");
+        $("#markup-tsv").hide();
+        $("#tsv-markup #input").hide();
+        $("#tsv-markup #output").hide();
+        $("#tsv-markup").show();
+        showing = "tsv-markup";
+    });
     $("#tsv-markup #file").change(function () {
         var file = $("#tsv-markup #file")[0].files[0];
         if (file) {
@@ -27,10 +43,31 @@ $(document).ready(function () {
             $("#tsv-markup #input").html("").hide();
             $("#tsv-markup #output").html("").hide();
         }
-    })
-})
+    });
+    $("#tsv-markup #in").click(function () {
+        $("#tsv-markup #output").hide();
+        $('#tsv-markup #input').show();
+    });
+    $("#tsv-markup #out").click(function () {
+        $("#tsv-markup #input").hide();
+        $('#tsv-markup #output').show();
+    });
 
-$(document).ready(function () {
+    // #markup-tsv elements
+    $("#markup").click(function () {
+        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+            alert("The File APIs are not fully supported in this browser.");
+            return;
+        }
+
+        $("#markup").addClass("underline");
+        $("#tsv").removeClass("underline");
+        $("#tsv-markup").hide();
+        $("#markup-tsv #input").hide();
+        $("#markup-tsv #output").hide();
+        $("#markup-tsv").show();
+        showing = "markup-tsv";
+    });
     $("#markup-tsv #file").change(function () {
         var file = $("#markup-tsv #file")[0].files[0];
         if (file) {
@@ -38,103 +75,60 @@ $(document).ready(function () {
             reader.readAsText(file);
             reader.onload = function (e) {
                 $("#markup-tsv #input").html(e.target.result);
-                tsv = generateTsv(e.target.result);
-                $("#markup-tsv #output").html(tsv);
+                $("#markup-tsv #output").html(generateTsv(e.target.result));
             }
         }
         else {
             $("#markup-tsv #input").html("").hide();
             $("#markup-tsv #output").html("").hide();
         }
-    })
-})
-
-function tsvToMarkup() {
-    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-        alert("The File APIs are not fully supported in this browser.");
-        return;
-    }
-
-    $("#tsv").addClass("underline");
-    $("#markup").removeClass("underline");
-    $("#markup-tsv").hide();
-    $("#tsv-markup #input").hide();
-    $("#tsv-markup #output").hide();
-    $("#tsv-markup").show();
-    showing = "tsv-markup";
-}
-
-function markupToTsv() {
-    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-        alert("The File APIs are not fully supported in this browser.");
-        return;
-    }
-
-    $("#markup").addClass("underline");
-    $("#tsv").removeClass("underline");
-    $("#tsv-markup").hide();
-    $("#markup-tsv #input").hide();
-    $("#markup-tsv #output").hide();
-    $("#markup-tsv").show();
-    showing = "markup-tsv";
-}
-
-function showInput() {
-    if (showing == "tsv-markup") {
-        $("#tsv-markup #output").hide();
-        $('#tsv-markup #input').show();
-    }
-    else if (showing == "markup-tsv") {
+    });
+    $("#markup-tsv #in").click(function () {
         $('#markup-tsv #output').hide();
         $('#markup-tsv #input').show();
-    }
-}
-
-function showOutput() {
-    if (showing == "tsv-markup") {
-        $("#tsv-markup #input").hide();
-        $('#tsv-markup #output').show();
-    }
-    else if (showing == "markup-tsv") {
+    });
+    $("#markup-tsv #out").click(function () {
         $('#markup-tsv #input').hide();
         $('#markup-tsv #output').show();
-    }
-}
+    });
 
-function download() {
-    if (showing == "tsv-markup") {
-        var data = markup;
-        var filename = "MoveDex.txt";
-    }
-    else if (showing == "markup-tsv") {
-        var data = tsv;
-        var filename = "MoveDex.tsv";
-    }
-    if (!data) {
-        alert("Nothing to download");
-        return;
-    }
+    // download button
+    $("#download").click(function () {
+        if (showing == "tsv-markup") {
+            var data = markup;
+            var filename = "MoveDex.txt";
+        }
+        else if (showing == "markup-tsv") {
+            var data = tsv;
+            var filename = "MoveDex.tsv";
+        }
+        if (!data) {
+            alert("Nothing to download");
+            return;
+        }
 
-    var file = new Blob([data], { type: "text/plain" });
-    if (window.navigator.msSaveOrOpenBlob) {
-        // IE10+
-        window.navigator.msSaveOrOpenBlob(file, filename);
-    }
-    else {
-        // Others
-        var a = document.createElement("a");
-        var url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function () {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }, 0);
-    }
-}
+        var file = new Blob([data], { type: "text/plain" });
+        if (window.navigator.msSaveOrOpenBlob) {
+            // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        }
+        else {
+            // Others
+            var a = document.createElement("a");
+            var url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    });
+});
 
+/* file format conversions */
 var markupFormat = "#### {0}\n___\n- **Type:** {1}\n- **Move Power:** {2}\n- **Move Time:** {3}\n- **PP:** {4}\n- **Duration:** {5}\n- **Range:** {6}\n- **Description:**  \n{7}\n- **Higher Levels:**  \n{8}"
 var column = "```\n```"
 var page = "\\page"
@@ -142,13 +136,22 @@ var pageNumber = "<div class='pageNumber auto'></div>";
 var header = "Name\tType\tMove Power\tMove Time\tPP\tDuration\tRange\tDescription Damage\tDescription\tHigher Levels Damage\tHigher Levels Override";
 var linesPerCol = 63;
 var charsPerLine = 58;
+var dice = /\d+d\d+/g;
 
+/**
+ * Convert the tsv file contents to homebrewery markup.
+ * @param {string} tsv 
+ * @returns {string} markup
+ */
 function generateMarkup(tsv) {
     markup = [pageNumber];
     var colLen = 0;
     var colNum = 0;
 
-    var rows = tsv.replace("}+MOVE", "} + MOVE").split("\n");
+    var rows = tsv
+        .replace("}+MOVE", "} + MOVE")
+        .split("\n");
+
     rows.forEach(row => {
         row = row.split("\t");
         var name = row[0];
@@ -180,9 +183,8 @@ function generateMarkup(tsv) {
                     .format(higher[0], higher[1], higher[2]);
             }
 
-            var entry = format.format(name, type, power, time, pp, duration, range, description, higher);
-            // might need to do special stuff for é and ’
-            entry = entry.replace("Pokemon", "Pokémon");
+            var entry = format.format(name, type, power, time, pp, duration, range, description, higher)
+                .replace("Pokemon", "Pokémon");
 
             var len = 0;
             var lines = entry.split("\n");
@@ -209,16 +211,60 @@ function generateMarkup(tsv) {
         }
     });
 
-    markup = markup.join("\n\n");
-    markup.trim();
-    markup.replace(/\n{3,}/g, "\n\n");
-
+    markup = markup
+        .join("\n\n")
+        .trim()
+        .replace(/\n{3,}/g, "\n\n");
     return markup;
 }
 
+/**
+ * Convert the markup file contents to tsv.
+ * @param {string} markup 
+ * @returns {string} tsv
+ */
 function generateTsv(markup) {
-    // TODO
-    console.log("generate tsv");
+    tsv = [header];
+    var sections = markup.split("####");
+    sections.forEach(section => {
+        section = section.replace(/- \*\*[^*]*\*\* /, "{split_here}")
+            .replace("___", "")
+            .replace(page, "")
+            .replace(pageNumber, "")
+            .replace(column, "")
+            .replace("\n", "")
+            .replace("\r", "")
+            .split("{split_here}");
 
+        var name = section[0];
+        var type = section[1];
+        var power = section[2];
+        var time = section[3];
+        var pp = section[4];
+        var duration = section[5];
+        var range = section[6];
+        var description = section[7];
 
+        var damage = description.match(dice[0]);
+        damage = damage ? damage : "";
+        description = description.replace(damage, "{}").replace("}+MOVE", "} + MOVE");
+
+        var higher = section[8];
+        var override = higher;
+        higher = higher.match(dice);
+        if (higher.length == 3) {
+            higher = higher.join(",");
+            override = "";
+        }
+
+        row = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}"
+            .format(name, type, power, time, pp, duration, range, damage, description, higher, override)
+            .trim();
+        if (row) {
+            tsv.push(row);
+        }
+    });
+
+    tsv = tsv.join("\n");
+    return tsv;
 }

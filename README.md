@@ -8,14 +8,14 @@ Convert the Pokémon DnD Move Dex from a Tab Separated Value file to a Markup Te
 
 ## Conversion
 
-<h3 align="center"><a id="tsv" onclick="tsvToMarkup()">TSV to Markup</a> | <a id="markup" onclick="markupToTsv()">Markup to TSV</a></h3>
+<h3 align="center"><a id="tsv">TSV to Markup</a> | <a id="markup">Markup to TSV</a></h3>
 
 <div id="tsv-markup" hidden>
     <div><input id="file" type="file" accept=".tsv"/></div>
     <div id="display">
         <div>
-            <div style="float:left">Display <a onclick="showInput()">input</a> | <a onclick="showOutput()">output</a></div>
-            <div style="float:right"><button onclick="download()">Download Output</button></div>
+            <div style="float:left">Display <a id="in">input</a> | <a id="out">output</a></div>
+            <div style="float:right"><button id="download">Download Output</button></div>
             <div style="clear:both"></div>
         </div>
         <hr/>
@@ -30,8 +30,8 @@ Convert the Pokémon DnD Move Dex from a Tab Separated Value file to a Markup Te
     <div><input id="file" type="file" accept=".txt"/></div>
     <div id="display">
         <div>
-            <div style="float:left">Display <a onclick="showInput()">input</a> | <a onclick="showOutput()">output</a></div>
-            <div style="float:right"><button onclick="download()">Download Output</button></div>
+            <div style="float:left">Display <a id="in">input</a> | <a id="out">output</a></div>
+            <div style="float:right"><button id="download">Download Output</button></div>
             <div style="clear:both"></div>
         </div>
         <hr/>
