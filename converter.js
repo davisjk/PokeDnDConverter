@@ -187,7 +187,7 @@ function generateMarkup(tsv) {
             var len = 0;
             var lines = entry.split("\n");
             lines.forEach(line => {
-                len += Math.ceil(line.len / charsPerLine);
+                len += Math.ceil(line.length / charsPerLine);
             });
             if (len + colLen > linesPerCol) {
                 colLen = len;
