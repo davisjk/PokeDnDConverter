@@ -251,7 +251,9 @@ function generateTsv(markup) {
             if (description) {
                 var damage = description.match(dice);
                 damage = damage ? damage[0] : "";
-                description = description.replace(damage, "{}").replace("}+MOVE", "} + MOVE");
+                if (damage) {
+                    description = description.replace(damage, "{}").replace("}+MOVE", "} + MOVE");
+                }
             }
 
             var higher = section[8];
