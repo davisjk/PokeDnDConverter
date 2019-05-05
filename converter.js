@@ -168,7 +168,7 @@ function generateMarkup(tsv) {
             var format = markupFormat;
 
             // remove Higher Levels from markup if we have no data for it
-            if (!higher == [""] && !override) {
+            if (higher == [""] && !override) {
                 format = format.replace(/^.*Higher.*$/, "");
                 higher = "";
             }
