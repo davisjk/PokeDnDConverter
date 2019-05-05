@@ -145,8 +145,8 @@ var charsPerLine = 58;
 
 function generateMarkup(tsv) {
     markup = [pageNumber];
-    colLen = 0;
-    colNum = 0;
+    var colLen = 0;
+    var colNum = 0;
 
     var rows = tsv.replace("}+MOVE", "} + MOVE").split("\n");
     rows.forEach(row => {
@@ -154,59 +154,59 @@ function generateMarkup(tsv) {
         var name = row[0];
 
         // skip the header row
-        if (name == "Name") {
-            continue;
-        }
+        if (name != "Name") {
+            var type = row[1];
+            var power = row[2];
+            var time = row[3];
+            var pp = row[4];
+            var duration = row[5];
+            var range = row[6];
+            var damage = row[7];
+            var description = row[8].replace("{}", damage);
+            var higher = row[9].split(",");
+            var override = row[10];
+            var format = markupFormat;
 
-        var type = row[1];
-        var power = row[2];
-        var time = row[3];
-        var pp = row[4];
-        var duration = row[5];
-        var range = row[6];
-        var damage = row[7];
-        var description = row[8].replace("{}", damage);
-        var higher = row[9].split(",");
-        var override = row[10];
-        var format = markupFormat;
-
-        // remove Higher Levels from markup if we have no data for it
-        if (!higher == [""] && !override) {
-            format = format.replace(/^.*Higher.*$/, "");
-            higher = "";
-        }
-        else if (override) {
-            higher = override;
-        }
-        else {
-            higher = "The base damage of this attack increases to {0} at level 5, {1} at level 11, and {2} at level 17."
-                .format(higher[0], higher[1], higher[2]);
-        }
-
-        var entry = format.format(name, type, power, time, pp, duration, range, description, higher);
-        // might need to do special stuff for é and ’
-        entry = entry.replace("Pokemon", "Pokémon");
-        var len = 0;
-        var lines = entry.split("\n");
-        lines.forEach(line => {
-            len += Math.ceil(line.len / charsPerLine);
-        });
-        if (len + colLen > linesPerCol) {
-            colLen = len;
-            if (colNum == 0) {
-                colNum = 1;
-                markup.push(column);
+            // remove Higher Levels from markup if we have no data for it
+            if (!higher == [""] && !override) {
+                format = format.replace(/^.*Higher.*$/, "");
+                higher = "";
+            }
+            else if (override) {
+                higher = override;
             }
             else {
-                colNum = 0;
-                markup.push(page);
-                markup.push(pageNumber);
+                higher = "The base damage of this attack increases to {0} at level 5, {1} at level 11, and {2} at level 17."
+                    .format(higher[0], higher[1], higher[2]);
             }
+
+            var entry = format.format(name, type, power, time, pp, duration, range, description, higher);
+            // might need to do special stuff for é and ’
+            entry = entry.replace("Pokemon", "Pokémon");
+
+            var len = 0;
+            var lines = entry.split("\n");
+            lines.forEach(line => {
+                len += Math.ceil(line.len / charsPerLine);
+            });
+            if (len + colLen > linesPerCol) {
+                colLen = len;
+                if (colNum == 0) {
+                    colNum = 1;
+                    markup.push(column);
+                }
+                else {
+                    colNum = 0;
+                    markup.push(page);
+                    markup.push(pageNumber);
+                }
+            }
+            else {
+                colLen += len;
+            }
+
+            markup.push(entry);
         }
-        else {
-            colLen += len;
-        }
-        markup.push(entry);
     });
 
     markup = markup.join("\n\n");
