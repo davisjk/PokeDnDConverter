@@ -93,7 +93,7 @@ $(document).ready(function () {
     });
 
     // download button
-    $("#download").click(function () {
+    $(".download").click(function () {
         if (showing == "tsv-markup") {
             var data = markup;
             var filename = "MoveDex.txt";
