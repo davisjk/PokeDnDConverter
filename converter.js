@@ -170,7 +170,7 @@ function generateMarkup(tsv) {
             var duration = row[5];
             var range = row[6];
             var damage = row[7];
-            var description = row[8].replace("{}", damage);
+            var description = row[8].replace(/\{\}/g, damage);
             var higher = row[9];
             var override = row[10];
             var format = markupFormat;
@@ -190,7 +190,7 @@ function generateMarkup(tsv) {
             }
 
             var entry = format.format(name, type, power, time, pp, duration, range, description, higher)
-                .replace("Pokemon", "Pokémon");
+                .replace(/Pokemon/ig, "Pokémon");
 
             var len = 0;
             var lines = entry.split("\n");
@@ -260,9 +260,10 @@ function generateTsv(markup) {
                 var damage = description.match(rdice);
                 damage = damage ? damage[0] : "";
                 if (damage) {
+                    var rdamage = new RegExp(damage, 'ig')
                     description = description
-                        .replace(damage, "{}")
-                        .replace("}+MOVE", "} + MOVE");
+                        .replace(rdamage, "{}")
+                        .replace(/\}\+MOVE/ig, "} + MOVE");
                 }
             }
             else {
