@@ -134,8 +134,8 @@ var column = "```\n```"
 var page = "\\page"
 var pageNumber = "<div class='pageNumber auto'></div>";
 var header = "Name\tType\tMove Power\tMove Time\tPP\tDuration\tRange\tDescription Damage\tDescription\tHigher Levels Damage\tHigher Levels Override";
-var linesPerCol = 63;
-var charsPerLine = 58;
+var linesPerCol = 60;
+var charsPerLine = 60;
 var rcolumn = /```\n```/g;
 var rpage = /\\page/g;
 var rdice = /\d+d\d+/g;
